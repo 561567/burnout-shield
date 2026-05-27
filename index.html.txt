@@ -1,0 +1,168 @@
+html<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ADHD Burnout Shield</title>
+    <!-- Inter Font Family -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS Engine -->
+    <script src="https://tailwindcss.com"></script>
+    <!-- Lucide Icon Set -->
+    <script src="https://unpkg.com"></script>
+    
+    <!-- PWA Manifest Dynamic Injection -->
+    <script>
+        const manifest = {
+            "short_name": "Shield",
+            "name": "ADHD Burnout Shield",
+            "icons": [
+                { "src": "https://flaticon.com", "type": "image/png", "sizes": "512x512" }
+            ],
+            "start_url": ".",
+            "background_color": "#000000",
+            "theme_color": "#000000",
+            "display": "standalone",
+            "orientation": "portrait"
+        };
+        const stringManifest = JSON.stringify(manifest);
+        const blob = new Blob([stringManifest], {type: 'application/json'});
+        const manifestURL = URL.createObjectURL(blob);
+        const link = document.createElement('link');
+        link.rel = 'manifest';
+        link.href = manifestURL;
+        document.head.appendChild(link);
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000000;
+            color: #F4F4F5; /* Ergonomic soft off-white to prevent halation eye strain */
+            -webkit-tap-highlight-color: transparent;
+        }
+        .bg-matte-black { background-color: #1A1A1E; }
+        .bg-maroon { background-color: #C62828; }
+        
+        input[type="time"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            cursor: pointer;
+        }
+        /* Custom scrollbar handling for dark tray containers */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #000000; }
+        ::-webkit-scrollbar-thumb { background: #27272A; border-radius: 2px; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-start items-center p-4 overflow-y-auto select-none relative">
+
+    <div class="w-full max-w-md my-auto py-4">
+        
+        <!-- PERSISTENT HELPER CONTACT HOOK CONFIG -->
+        <div class="w-full bg-matte-black p-4 rounded-[16px] border border-zinc-900 mb-6 flex flex-col gap-2">
+            <label class="block text-[10px] font-bold tracking-widest text-zinc-400 uppercase">🔒 SOS HELPER CONTACT (OPTIONAL)</label>
+            <div class="relative flex items-center">
+                <span class="absolute left-3 text-xs text-zinc-500 font-medium">+353</span>
+                <input type="tel" id="helperPhone" oninput="saveHelperPhone(this)" placeholder="87 123 4567" class="w-full bg-black border border-zinc-800 text-zinc-300 rounded-lg p-2.5 pl-12 text-xs focus:outline-none focus:border-zinc-600 tracking-wide font-mono">
+            </div>
+            <p class="text-[9px] text-zinc-500">Saves locally. Automatically targets this person's messaging screen when dispatching.</p>
+        </div>
+
+        <!-- SECTION 1 HEADER -->
+        <div class="mb-3">
+            <h1 class="text-xs font-bold tracking-widest text-zinc-400 uppercase">🚨 Section 1: Ask someone to call a business for you</h1>
+            <p class="text-[11px] text-zinc-500 mt-0.5">For when you cannot face dialing the phone to cancel an official appointment.</p>
+        </div>
+
+        <!-- MAIN BUTTON LAYOUT: SECTION 1 -->
+        <main class="w-full flex flex-col gap-3 mb-8">
+            <button onclick="openModal('dentist')" class="w-full bg-matte-black text-zinc-100 p-5 rounded-[16px] flex items-center gap-4 active:scale-[0.98] transition-all duration-100 text-left border border-zinc-900">
+                <span class="text-xl shrink-0">🦷</span>
+                <span class="font-bold tracking-wide text-xs md:text-sm">1. DENTIST CANCELLATION</span>
+            </button>
+
+            <button onclick="openModal('doctor')" class="w-full bg-matte-black text-zinc-100 p-5 rounded-[16px] flex items-center gap-4 active:scale-[0.98] transition-all duration-100 text-left border border-zinc-900">
+                <span class="text-xl shrink-0">🩺</span>
+                <span class="font-bold tracking-wide text-xs md:text-sm">2. DOCTOR CANCELLATION</span>
+            </button>
+
+            <button onclick="openModal('hair')" class="w-full bg-matte-black text-zinc-100 p-5 rounded-[16px] flex items-center gap-4 active:scale-[0.98] transition-all duration-100 text-left border border-zinc-900">
+                <span class="text-xl shrink-0">💇</span>
+                <span class="font-bold tracking-wide text-xs md:text-sm">3. HAIR / BEAUTY CANCELLATION</span>
+            </button>
+
+            <button onclick="openModal('garage')" class="w-full bg-matte-black text-zinc-100 p-5 rounded-[16px] flex items-center gap-4 active:scale-[0.98] transition-all duration-100 text-left border border-zinc-900">
+                <span class="text-xl shrink-0">🚗</span>
+                <span class="font-bold tracking-wide text-xs md:text-sm">4. GARAGE / OTHER CANCELLATION</span>
+            </button>
+        </main>
+
+        <!-- SECTION 2 HEADER -->
+        <div class="mb-3">
+            <h1 class="text-xs font-bold tracking-widest text-zinc-400 uppercase">💬 Section 2: Copy a ready-made text to paste to people</h1>
+            <p class="text-[11px] text-zinc-500 mt-0.5">For when you are too burnt out to reply to texts from friends or family.</p>
+        </div>
+
+        <!-- MAIN BUTTON LAYOUT: SECTION 2 -->
+        <section class="w-full flex flex-col gap-3">
+            <button onclick="copyReply('unwell')" class="w-full bg-matte-black text-zinc-100 p-5 rounded-[16px] flex items-center justify-between active:scale-[0.98] transition-all duration-100 text-left border border-zinc-900">
+                <div class="flex items-center gap-4">
+                    <span class="text-xl shrink-0">🛌</span>
+                    <div>
+                        <span class="font-bold tracking-wide text-xs md:text-sm block">1. UNWELL / NO JUICE REPLY</span>
+                        <span class="text-[11px] text-zinc-400 block mt-0.5">Wiped out, sleep day, nothing to worry about.</span>
+                    </div>
+                </div>
+                <i data-lucide="copy" class="w-4 h-4 text-zinc-500 shrink-0 ml-2"></i>
+            </button>
+
+            <button onclick="copyReply('burnout')" class="w-full bg-matte-black text-zinc-100 p-5 rounded-[16px] flex items-center justify-between active:scale-[0.98] transition-all duration-100 text-left border border-zinc-900">
+                <div class="flex items-center gap-4">
+                    <span class="text-xl shrink-0">🪫</span>
+                    <div>
+                        <span class="font-bold tracking-wide text-xs md:text-sm block">2. BURNT OUT / SOCIAL CANCEL</span>
+                        <span class="text-[11px] text-zinc-400 block mt-0.5">Bricked, safe but off-grid, don't reply.</span>
+                    </div>
+                </div>
+                <i data-lucide="copy" class="w-4 h-4 text-zinc-500 shrink-0 ml-2"></i>
+            </button>
+
+            <button onclick="copyReply('family')" class="w-full bg-matte-black text-zinc-100 p-5 rounded-[16px] flex items-center justify-between active:scale-[0.98] transition-all duration-100 text-left border border-zinc-900">
+                <div class="flex items-center gap-4">
+                    <span class="text-xl shrink-0">🏡</span>
+                    <div>
+                        <span class="font-bold tracking-wide text-xs md:text-sm block">3. FAMILY OBLIGATIONS REPLY</span>
+                        <span class="text-[11px] text-zinc-400 block mt-0.5">Desperately need rest, all good, buzz tomorrow.</span>
+                    </div>
+                </div>
+                <i data-lucide="copy" class="w-4 h-4 text-zinc-500 shrink-0 ml-2"></i>
+            </button>
+
+            <button onclick="copyReply('overwhelmed')" class="w-full bg-matte-black text-zinc-100 p-5 rounded-[16px] flex items-center justify-between active:scale-[0.98] transition-all duration-100 text-left border border-zinc-900">
+                <div class="flex items-center gap-4">
+                    <span class="text-xl shrink-0">⏳</span>
+                    <div>
+                        <span class="font-bold tracking-wide text-xs md:text-sm block">4. OVERWHELMED / BUYING TIME</span>
+                        <span class="text-[11px] text-zinc-400 block mt-0.5">Scattered headspace, all good, replying later.</span>
+                    </div>
+                </div>
+                <i data-lucide="copy" class="w-4 h-4 text-zinc-500 shrink-0 ml-2"></i>
+            </button>
+        </section>
+
+    </div>
+
+    <!-- CENTERED OVERLAY MODAL FOR SECTION 1 -->
+    <div id="modalOverlay" class="fixed inset-0 bg-black/95 backdrop-blur-md hidden justify-center items-center p-4 z-50 transition-all duration-200" onclick="closeModal(event)">
+        <div class="bg-matte-black w-full max-w-sm rounded-[16px] p-6 border border-zinc-800 shadow-2xl relative" onclick="event.stopPropagation()">
+            
+            <button onclick="closeModal(null)" class="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+
+            <h2 id="modalTitle" class="text-sm font-bold mb-5 tracking-wide text-zinc-300">Cancellation Details</h2>
+
+            <div class="mb-4">
+Use code with caution.What time is the appointment?MorningAfternoonAsapSelect PracticeEnter Practice NameCancellation Tone ReasonInclude "Sick" ReasonKeep Factual / BlankMessage PreviewSend Emergency RequestRequest Sent.The text application has loaded your message. Close your eyes, drop your shoulders. It is being handled.Back to shieldlucide.createIcons();const defaultClinics = {dentist: ["My Regular Dentist", "Local Dental Practice", "Smile Dental Clinic"],doctor: ["My Regular GP", "Local GP Clinic", "Centric Health Medical"],hair: ["My Regular Salon / Barber", "Peter Mark Salon", "Local Hair Studio"],garage: ["My Local Garage", "Main Street Auto Repair", "Advance Pitstop"]};const replyScripts = {unwell: "Hey, woke up completely wiped and feeling under the weather today so I have to pull out of plans. Absolutely nothing to worry about at all, I just need a heavy sleep day to shake it off. No need to reply to this text, I’ll check back in when I'm upright again!",burnout: "Hey, my brain has hit a massive wall of burnout today and I’m completely bricked. I was really looking forward to seeing you but I physically cannot make it out of the house. You've done nothing wrong and I'm totally safe, just completely out of battery. Going off-grid to hibernate. Please don't worry about me or feel like you have to reply, talk soon x",family: "Hi, I'm feeling incredibly run down and exhausted today, so I won't be able to make it over. I'm completely fine, just desperately need to spend the day sleeping and recharging my batteries. Don't worry about me at all, I'll buzz you tomorrow once I've had a proper rest.",overwhelmed: "Hey, got your text! My brain is a bit scattered and overloaded at the minute so I can't reply properly right now. Everything is all good and there's nothing wrong, I just need a little bit of quiet headspace to process things. I'll get back to you as soon as I can, no need to send anything back to this for now!"};let currentCategory = '';let reasonMode = 'sick'; // tracked configuration substate// Persistent Caching Initialization Hookswindow.addEventListener('DOMContentLoaded', () => {const savedNumber = localStorage.getItem('helper_phone_number') || '';document.getElementById('helperPhone').value = savedNumber;});function saveHelperPhone(input) {let clearedNum = input.value.replace(/\s+/g, '');localStorage.setItem('helper_phone_number', clearedNum);if(currentCategory) updateLivePreview();}function openModal(category) {currentCategory = category;const titles = {dentist: "🦷 Dentist Cancellation",doctor: "🩺 Doctor Cancellation",hair: "💇 Hair & Beauty",garage: "🚗 Garage & Other"};document.getElementById('modalTitle').innerText = titles[category];const storedPractices = JSON.parse(localStorage.getItem(practices_${category})) || defaultClinics[category];const selectEl = document.getElementById('practiceSelect');selectEl.innerHTML = '';storedPractices.forEach(practice => {const opt = document.createElement('option');opt.value = practice;opt.innerText = practice;selectEl.appendChild(opt);});const addNewOpt = document.createElement('option');addNewOpt.value = "ADD_NEW";addNewOpt.innerText = "➕ Add New Practice Name";selectEl.appendChild(addNewOpt);document.getElementById('customPracticeContainer').classList.add('hidden');document.getElementById('customPracticeInput').value = '';document.getElementById('appointmentTime').value = '';toggleReasonMode('sick');const modal = document.getElementById('modalOverlay');modal.classList.remove('hidden');modal.classList.add('flex');updateLivePreview();}function closeModal(event) {if (event === null || event.target === document.getElementById('modalOverlay')) {document.getElementById('modalOverlay').classList.add('hidden');document.getElementById('modalOverlay').classList.remove('flex');}}function applyQuickTime(timeStr) {const timeInput = document.getElementById('appointmentTime');if(timeStr === 'ASAP') {const now = new Date();timeInput.value = ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')};} else {timeInput.value = timeStr;}updateLivePreview();}function handlePracticeChange(select) {const container = document.getElementById('customPracticeContainer');if (select.value === "ADD_NEW") {container.classList.remove('hidden');document.getElementById('customPracticeInput').focus();} else {container.classList.add('hidden');}}function toggleReasonMode(mode) {reasonMode = mode;const sickBtn = document.getElementById('reasonSickBtn');const plainBtn = document.getElementById('reasonPlainBtn');if(mode === 'sick') {sickBtn.classList.add('bg-zinc-800', 'text-zinc-200');sickBtn.classList.remove('text-zinc-500', 'hover:text-zinc-300');plainBtn.classList.remove('bg-zinc-800', 'text-zinc-200');plainBtn.classList.add('text-zinc-500', 'hover:text-zinc-300');} else {plainBtn.classList.add('bg-zinc-800', 'text-zinc-200');plainBtn.classList.remove('text-zinc-500', 'hover:text-zinc-300');sickBtn.classList.remove('bg-zinc-800', 'text-zinc-200');sickBtn.classList.add('text-zinc-500', 'hover:text-zinc-300');}updateLivePreview();}function generateMessageString() {let timeVal = document.getElementById('appointmentTime').value || "[Time]";const selectEl = document.getElementById('practiceSelect');let practiceName = selectEl ? selectEl.value : "[Practice Name]";if (practiceName === "ADD_NEW") {const customName = document.getElementById('customPracticeInput').value.trim();practiceName = customName || "[Practice Name]";}const explanation = (reasonMode === 'sick')? "Can you please just tell them I woke up sick and need to cancel?": "Can you please tell them I am unavailable and need to cancel it?";return Hey, I am completely bricked today with ADHD burnout and physically cannot bring myself to dial the phone. Can you do me a massive favor and ring ${practiceName} to cancel my appointment at ${timeVal}? ${explanation} If I no-show, they will fine me and remove me from their patient list. When it's done, just text me back a single thumb-up emoji 👍 so I know it's handled without me having to open my inbox and panic. Thank you so much,;}function updateLivePreview() {document.getElementById('previewTray').innerText = generateMessageString();}function sendEmergencySMS() {let timeVal = document.getElementById('appointmentTime').value;const selectEl = document.getElementById('practiceSelect');let finalPracticeName = selectEl.value;if (!timeVal) {const now = new Date();timeVal = ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')};}if (selectEl.value === "ADD_NEW") {const customName = document.getElementById('customPracticeInput').value.trim();if (!customName) {alert("Please provide the custom clinic name.");return;}finalPracticeName = customName;const storedPractices = JSON.parse(localStorage.getItem(practices_${currentCategory})) || defaultClinics[currentCategory];if (!storedPractices.includes(customName)) {storedPractices.unshift(customName);localStorage.setItem(practices_${currentCategory}, JSON.stringify(storedPractices));}}const textScript = generateMessageString();// Core Native Contact Parsing Hook Extractionconst storedRawPhone = localStorage.getItem('helper_phone_number') || '';const recipientPrefix = storedRawPhone ? +353${storedRawPhone} : '';const isAppleDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);const bodySeparator = isAppleDevice ? '&' : '?';// Compiles directly into standard format: sms:+353871234567&body=Text%20Here [353]const smsUrl = sms:${recipientPrefix}${bodySeparator}body=${encodeURIComponent(textScript)};window.location.href = smsUrl;showSuccessState("Request Sent.","The text application has loaded your message. Close your eyes, drop your shoulders. It is being handled.");}function copyReply(scriptKey) {const textToCopy = replyScripts[scriptKey];navigator.clipboard.writeText(textToCopy).then(() => {showSuccessState("Copied to Clipboard!","The message is ready. Open your messaging app, paste it into the text box, send it, and drop offline. You are safe.");}).catch(() => {const el = document.createElement('textarea');el.value = textToCopy;document.body.appendChild(el);el.select();document.execCommand('copy');document.body.removeChild(el);showSuccessState("Copied to Clipboard!","The message is ready. Open your messaging app, paste it into the text box, send it, and drop offline. You are safe.");});}function showSuccessState(heading, body) {document.getElementById('modalOverlay').classList.add('hidden');document.getElementById('modalOverlay').classList.remove('flex');document.getElementById('successHeading').innerText = heading;document.getElementById('successBody').innerText = body;document.getElementById('successState').classList.remove('hidden');document.getElementById('successState').classList.add('flex');}function resetApp() {document.getElementById('successState').classList.add('hidden');document.getElementById('successState').classList.remove('flex');}
