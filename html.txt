@@ -1,0 +1,172 @@
+html<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ADHD Burnout Shield</title>
+    <style>
+        /* CRITICAL OFFLINE STYLING ENGINE */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #000000;
+            color: #F4F4F5;
+            -webkit-tap-highlight-color: transparent;
+            min-h-screen: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px;
+            overflow-y: auto;
+        }
+        .wrapper { w-full: 100%; max-width: 440px; margin: auto; padding: 16px 0; }
+        .header-box { margin-bottom: 16px; }
+        .section-title { font-size: 11px; font-weight: 700; tracking: 0.1em; color: #A1A1AA; text-transform: uppercase; margin-bottom: 4px; }
+        .section-desc { font-size: 11px; color: #71717A; line-height: 1.4; }
+        .button-stack { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; width: 100%; }
+        
+        /* SPECIFIED COMPONENT METRICS */
+        .matte-btn {
+            width: 100%;
+            background-color: #1A1A1E;
+            color: #F4F4F5;
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid #27272A;
+            text-align: left;
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+        .matte-btn:active { transform: scale(0.98); }
+        .btn-left { display: flex; align-items: center; gap: 16px; }
+        .btn-emoji { font-size: 20px; flex-shrink: 0; }
+        .btn-subtext { font-size: 11px; color: #A1A1AA; font-weight: 400; display: block; margin-top: 4px; }
+        
+        /* CONTACT BAR CONFIG */
+        .contact-box { background: #1A1A1E; padding: 16px; border-radius: 16px; border: 1px solid #27272A; margin-bottom: 24px; width: 100%; }
+        .contact-label { font-size: 10px; font-weight: 700; color: #A1A1AA; display: block; margin-bottom: 8px; }
+        .input-row { display: flex; position: relative; align-items: center; }
+        .prefix { position: absolute; left: 12px; font-size: 13px; color: #71717A; font-weight: 500; }
+        .phone-input { width: 100%; background: #000000; border: 1px solid #27272A; color: #D4D4D8; padding: 10px 10px 10px 48px; border-radius: 8px; font-size: 13px; outline: none; }
+        .phone-input:focus { border-color: #52525B; }
+        
+        /* OVERLAY MODAL WINDOWS */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; justify-content: center; align-items: center; padding: 16px; z-index: 100; }
+        .modal-box { background: #1A1A1E; width: 100%; max-width: 360px; border-radius: 16px; padding: 24px; border: 1px solid #27272A; position: relative; }
+        .close-x { position: absolute; top: 16px; right: 16px; background: none; border: none; color: #71717A; font-size: 20px; cursor: pointer; }
+        .modal-h2 { font-size: 14px; font-weight: 700; color: #D4D4D8; margin-bottom: 20px; }
+        .field-group { margin-bottom: 16px; }
+        .field-label { font-size: 11px; font-weight: 600; color: #A1A1AA; text-transform: uppercase; display: block; margin-bottom: 8px; }
+        .time-picker { width: 100%; background: #000000; border: 1px solid #27272A; color: #F4F4F5; padding: 12px; border-radius: 8px; font-size: 18px; font-weight: 500; outline: none; }
+        .chip-row { display: flex; gap: 8px; margin-top: 8px; }
+        .time-chip { flex: 1; background: #000000; border: 1px solid #27272A; color: #A1A1AA; padding: 8px; border-radius: 6px; font-size: 11px; cursor: pointer; text-align: center; }
+        .select-input { width: 100%; background: #000000; border: 1px solid #27272A; color: #F4F4F5; padding: 12px; border-radius: 8px; font-size: 13px; outline: none; }
+        .text-input { width: 100%; background: #000000; border: 1px solid #27272A; color: #F4F4F5; padding: 12px; border-radius: 8px; font-size: 13px; outline: none; margin-top: 8px; }
+        
+        /* TONE BUTTON SELECTION */
+        .toggle-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; background: #000000; padding: 4px; border-radius: 8px; border: 1px solid #27272A; }
+        .toggle-btn { background: none; border: none; color: #71717A; padding: 8px; font-size: 11px; font-weight: 500; border-radius: 6px; cursor: pointer; }
+        .toggle-btn.active { background: #27272A; color: #F4F4F5; }
+        
+        .preview-box { padding: 12px; border: 1px solid #27272A; background: #09090B; border-radius: 8px; max-height: 96px; overflow-y: auto; font-size: 12px; color: #D4D4D8; line-height: 1.5; margin-top: 8px; }
+        .maroon-btn { width: 100%; background: #C62828; color: #F4F4F5; border: none; font-weight: 700; padding: 16px; border-radius: 8px; font-size: 13px; text-transform: uppercase; cursor: pointer; margin-top: 16px; }
+        
+        /* STATE DISPLAY SCREENS */
+        .status-screen { position: fixed; inset: 0; background: #000000; display: none; flex-direction: column; justify-content: center; align-items: center; padding: 24px; text-align: center; z-index: 200; }
+        .circle-check { width: 64px; height: 64px; background: #1A1A1E; border: 1px solid #27272A; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #10B981; font-size: 28px; margin-bottom: 24px; }
+        .status-h1 { font-size: 20px; font-weight: 700; color: #F4F4F5; margin-bottom: 8px; }
+        .status-p { font-size: 14px; color: #A1A1AA; max-width: 280px; line-height: 1.6; }
+        .back-link { margin-top: 32px; background: none; border: none; color: #52525B; font-size: 12px; text-decoration: underline; cursor: pointer; }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        
+        <!-- HELPER STORAGE CONFIG -->
+        <div class="contact-box">
+            <label class="contact-label">🔒 SOS HELPER CONTACT (OPTIONAL)</label>
+            <div class="input-row">
+                <span class="prefix">+353</span>
+                <input type="tel" id="helperPhone" oninput="saveHelperPhone(this)" placeholder="87 123 4567" class="phone-input">
+            </div>
+        </div>
+
+        <!-- SECTION 1 HOOKS -->
+        <div class="header-box">
+            <h1 class="section-title">🚨 Section 1: Ask someone to call a business for you</h1>
+            <p class="section-desc">For when you cannot face dialing the phone to cancel an official appointment.</p>
+        </div>
+
+        <div class="button-stack">
+            <button onclick="openModal('dentist')" class="matte-btn"><span class="btn-left"><span class="btn-emoji">🦷</span>1. DENTIST CANCELLATION</span><span>❯</span></button>
+            <button onclick="openModal('doctor')" class="matte-btn"><span class="btn-left"><span class="btn-emoji">🩺</span>2. DOCTOR CANCELLATION</span><span>❯</span></button>
+            <button onclick="openModal('hair')" class="matte-btn"><span class="btn-left"><span class="btn-emoji">💇</span>3. HAIR / BEAUTY CANCELLATION</span><span>❯</span></button>
+            <button onclick="openModal('garage')" class="matte-btn"><span class="btn-left"><span class="btn-emoji">🚗</span>4. GARAGE / OTHER CANCELLATION</span><span>❯</span></button>
+        </div>
+
+        <!-- SECTION 2 HOOKS -->
+        <div class="header-box">
+            <h1 class="section-title">💬 Section 2: Copy a ready-made text to paste to people</h1>
+            <p class="section-desc">For when you are too burnt out to reply to texts from friends or family.</p>
+        </div>
+
+        <div class="button-stack">
+            <button onclick="copyReply('unwell')" class="matte-btn">
+                <span class="btn-left">
+                    <span class="btn-emoji">Bed Emojis🛌</span>
+                    <span>
+                        <span>1. UNWELL / NO JUICE REPLY</span>
+                        <span class="btn-subtext">Wiped out, sleep day, nothing to worry about.</span>
+                    </span>
+                </span>
+                <span>📋</span>
+            </button>
+            <button onclick="copyReply('burnout')" class="matte-btn">
+                <span class="btn-left">
+                    <span class="btn-emoji">🪫</span>
+                    <span>
+                        <span>2. BURNT OUT / SOCIAL CANCEL</span>
+                        <span class="btn-subtext">Bricked, safe but off-grid, don't reply.</span>
+                    </span>
+                </span>
+                <span>📋</span>
+            </button>
+            <button onclick="copyReply('family')" class="matte-btn">
+                <span class="btn-left">
+                    <span class="btn-emoji">🏡</span>
+                    <span>
+                        <span>3. FAMILY OBLIGATIONS REPLY</span>
+                        <span class="btn-subtext">Desperately need rest, all good, buzz tomorrow.</span>
+                    </span>
+                </span>
+                <span>📋</span>
+            </button>
+            <button onclick="copyReply('overwhelmed')" class="matte-btn">
+                <span class="btn-left">
+                    <span class="btn-emoji">⏳</span>
+                    <span>
+                        <span>4. OVERWHELMED / BUYING TIME</span>
+                        <span class="btn-subtext">Scattered headspace, all good, replying later.</span>
+                    </span>
+                </span>
+                <span>📋</span>
+            </button>
+        </div>
+
+    </div>
+
+    <!-- MODAL POPUP -->
+Use code with caution.✕Cancellation DetailsWhat time is the appointment?MorningAfternoonAsapSelect PracticeCancellation ReasonWoke Up SickKeep FactualMessage PreviewSend Emergency Request✓Request Sent.Back to shieldconst defaultClinics = {dentist: ["My Regular Dentist", "Local Dental Practice", "Smile Dental Clinic"],doctor: ["My Regular GP", "Local GP Clinic", "Centric Health Medical"],hair: ["My Regular Salon / Barber", "Peter Mark Salon", "Local Hair Studio"],garage: ["My Local Garage", "Main Street Auto Repair", "Advance Pitstop"]};const replyScripts = {unwell: "Hey, woke up completely wiped and feeling under the weather today so I have to pull out of plans. Absolutely nothing to worry about at all, I just need a heavy sleep day to shake it off. No need to reply to this text, I’ll check back in when I'm upright again!",burnout: "Hey, my brain has hit a massive wall of burnout today and I’m completely bricked. I was really looking forward to seeing you but I physically cannot make it out of the house. You've done nothing wrong and I'm totally safe, just completely out of battery. Going off-grid to hibernate. Please don't worry about me or feel like you have to reply, talk soon x",family: "Hi, I'm feeling incredibly run down and exhausted today, so I won't be able to make it over. I'm completely fine, just desperately need to spend the day sleeping and recharging my batteries. Don't worry about me at all, I'll buzz you tomorrow once I've had a proper rest.",overwhelmed: "Hey, got your text! My brain is a bit scattered and overloaded at the minute so I can't reply properly right now. Everything is all good and there's nothing wrong, I just need a little bit of quiet headspace to process things. I'll get back to you as soon as I can, no need to send anything back to this for now!"};let currentCategory = '';let reasonMode = 'sick';window.addEventListener('DOMContentLoaded', () => {document.getElementById('helperPhone').value = localStorage.getItem('helper_phone_number') || '';});function saveHelperPhone(input) {localStorage.setItem('helper_phone_number', input.value.replace(/\s+/g, ''));if(currentCategory) updateLivePreview();}function openModal(category) {currentCategory = category;document.getElementById('modalTitle').innerText = category.toUpperCase() + " CANCELLATION";const storedPractices = JSON.parse(localStorage.getItem(practices_${category})) || defaultClinics[category];const selectEl = document.getElementById('practiceSelect');selectEl.innerHTML = '';storedPractices.forEach(p => {const opt = document.createElement('option');opt.value = p; opt.innerText = p; selectEl.appendChild(opt);});const addOpt = document.createElement('option');addOpt.value = "ADD_NEW"; addOpt.innerText = "➕ Add New Practice Name"; selectEl.appendChild(addOpt);document.getElementById('customPracticeContainer');document.getElementById('customPracticeInput').classList.add('hidden');document.getElementById('customPracticeInput').value = '';document.getElementById('appointmentTime').value = '';toggleReasonMode('sick');document.getElementById('modalOverlay').style.display = 'flex';updateLivePreview();}function closeModal(e) {if (e === null || e.target === document.getElementById('modalOverlay') || e.target.className === 'close-x') {document.getElementById('modalOverlay').style.display = 'none';}}function applyQuickTime(t) {if(t === 'ASAP') {const d = new Date();document.getElementById('appointmentTime').value = ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')};} else {document.getElementById('appointmentTime').value = t;}updateLivePreview();}function handlePracticeChange(select) {const input = document.getElementById('customPracticeInput');if (select.value === "ADD_NEW") { input.classList.remove('hidden'); input.focus(); }else { input.classList.add('hidden'); }}function toggleReasonMode(mode) {reasonMode = mode;document.getElementById('reasonSickBtn').classList.toggle('active', mode === 'sick');document.getElementById('reasonPlainBtn').classList.toggle('active', mode === 'plain');updateLivePreview();}function generateMessageString() {let timeVal = document.getElementById('appointmentTime').value || "[Time]";let pName = document.getElementById('practiceSelect').value;if (pName === "ADD_NEW") pName = document.getElementById('customPracticeInput').value.trim() || "[Practice Name]";const exp = (reasonMode === 'sick') ? "Can you please just tell them I woke up sick and need to cancel?" : "Can you please tell them I am unavailable and need to cancel it?";return Hey, I am completely bricked today with ADHD burnout and physically cannot bring myself to dial the phone. Can you do me a massive favor and ring ${pName} to cancel my appointment at ${timeVal}? ${exp} If I no-show, they will fine me and remove me from their patient list. When it's done, just text me back a single thumb-up emoji 👍 so I know it's handled without me having to open my inbox and panic. Thank you so much,;}function updateLivePreview() {document.getElementById('previewTray').innerText = generateMessageString();}function sendEmergencySMS() {let timeVal = document.getElementById('appointmentTime').value;let selectEl = document.getElementById('practiceSelect');let fName = selectEl.value;if (!timeVal) {const d = new Date(); timeVal = ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')};}if (selectEl.value === "ADD_NEW") {fName = document.getElementById('customPracticeInput').value.trim();if (!fName) { alert("Please enter a custom name."); return; }let stored = JSON.parse(localStorage.getItem(practices_${currentCategory})) || defaultClinics[currentCategory];if (!stored.includes(fName)) { stored.unshift(fName); localStorage.setItem(practices_${currentCategory}, JSON.stringify(stored)); }}const txt = generateMessageString();const storedRaw = localStorage.getItem('helper_phone_number') || '';const prefix = storedRaw ? +353${storedRaw} : '';const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);window.location.href = sms:${prefix}${isApple ? '&' : '?'}body=${encodeURIComponent(txt)};showSuccessState("Request Sent.", "Your text application is loaded. Close your eyes, drop your shoulders. It is being handled.");}function copyReply(key) {const txt = replyScripts[key];navigator.clipboard.writeText(txt).then(() => {showSuccessState("Copied to Clipboard!", "Open your messaging app, paste, send, and drop offline. You are safe.");});}function showSuccessState(h, b) {document.getElementById('modalOverlay').style.display = 'none';document.getElementById('successHeading').innerText = h;document.getElementById('successBody').innerText = b;document.getElementById('successState').style.display = 'flex';}function resetApp() { document.getElementById('successState').style.display = 'none'; }
+### What to do now:
+1. Replace your old file code on GitHub with this new, completely independent version.
+2. Go back to your phone, close your open tabs, reload the page link, and you will see the **eight structured buttons** cleanly formatted on the screen [Image 3].
+
+Let me know if the **buttons and inputs load perfectly** on your screen now!
